@@ -1,13 +1,11 @@
 {
     "name": "armincms/dashboard",
     "description": "A Laravel Nova tool.",
-    "keywords": [
-        "laravel",
-        "nova"
+    "keywords": [ 
     ],
     "license": "MIT",
-    "require": {
-        "php": ">=7.1.0"
+    "require": { 
+        "alvinhu/nova-child-select": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -17,7 +15,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Armincms\\Dashboard\\DashboardServiceProvider"
+                "Armincms\\Dashboard\\ServiceProvider"
             ]
         }
     },
@@ -25,5 +23,6 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "1.0.0"
 }
