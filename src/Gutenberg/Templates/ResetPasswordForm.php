@@ -1,8 +1,7 @@
 <?php
 
 namespace Armincms\Dashboard\Gutenberg\Templates; 
-
-use Zareismail\Gutenberg\Template; 
+ 
 use Zareismail\Gutenberg\Variable;
 
 class ResetPasswordForm extends Template 
