@@ -2,19 +2,14 @@
 
 namespace Armincms\Dashboard\Cypress\Widgets;
 
-use Armincms\Contract\Nova\Role;
-use Armincms\Dashboard\Gutenberg\Templates\RegisterForm;
+use Armincms\Contract\Nova\Role; 
 use Laravel\Nova\Fields\Boolean; 
 use Laravel\Nova\Fields\Select; 
-use Zareismail\Cypress\Http\Requests\CypressRequest; 
-use Zareismail\Cypress\Widget;   
-use Zareismail\Gutenberg\Gutenberg;
-use Zareismail\Gutenberg\HasTemplate;
+use Zareismail\Cypress\Http\Requests\CypressRequest;    
+use Zareismail\Gutenberg\Gutenberg; 
 
 class Register extends Widget
-{        
-    use HasTemplate;
-
+{         
     /**
      * Bootstrap the resource for the given request.
      * 
@@ -24,11 +19,7 @@ class Register extends Widget
      */
     public function boot(CypressRequest $request, $layout)
     {     
-        $this->when($this->hasMeta('template'), function() use ($request, $layout) { 
-            $this->bootstrapTemplate($request, $layout);   
-        }, function() {
-            $this->renderable(false);
-        });
+        parent::boot($request, $layout);
 
         $this->when($this->hasMeta('login_fragment'), function() { 
             $fragmentId = $this->metaValue('login_fragment');
@@ -37,29 +28,15 @@ class Register extends Widget
             $this->withMeta([
                 'login_page' => $fragment ? $fragment->getUrl('/') : null
             ]);
-        });
-
-        $this->withMeta([
-            'errors' => $this->validationErrors($request),
-        ]);
-    }
-
-    /**
-     * Get the template id.
-     * 
-     * @return integer
-     */
-    public function getTemplateId(): int
-    { 
-        return $this->metaValue('template');
-    } 
+        }); 
+    }  
 
     /**
      * Serialize the widget fro template.
      * 
      * @return array
      */
-    public function serializeForTemplate(): array
+    public function serializeForDisplay(): array
     {   
         return [
             // form
@@ -103,13 +80,7 @@ class Register extends Widget
      */
     public static function fields($request)
     {
-        return [  
-            Select::make(__('Register Form Template'), 'config->template')
-                ->options(static::availableTemplates(RegisterForm::class))
-                ->displayUsingLabels()
-                ->required()
-                ->rules('required'), 
-
+        return [   
             Select::make(__('User Role'), 'config->roleId')
                 ->options(Role::newModel()->get()->keyBy->getKey()->map->name)
                 ->displayUsingLabels()
@@ -129,16 +100,12 @@ class Register extends Widget
             Boolean::make(__('Login after registration'), 'config->login_after_registration')
                 ->default(true),
         ];
-    } 
+    }  
 
-    protected function validationErrors(CypressRequest $request)
+    public static function relatableTemplates($request, $query)
     {
-        if (is_null($errors = $request->session()->get('errors'))) {
-            return [];
-        }
-
-        return collect($errors->messages())->map(function($errors, $field) {
-            return $errors[0] ?? null;
-        })->toArray();
+        return $query->handledBy(
+            \Armincms\Dashboard\Gutenberg\Templates\RegisterForm::class
+        );
     }
 }

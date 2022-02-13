@@ -1,20 +1,13 @@
 <?php
 
 namespace Armincms\Dashboard\Cypress\Widgets;
- 
-use Alvinhu\ChildSelect\ChildSelect; 
-use Armincms\Dashboard\Gutenberg\Templates\LoginForm;
-use Laravel\Nova\Fields\Heading; 
+   
 use Laravel\Nova\Fields\Select; 
-use Zareismail\Cypress\Http\Requests\CypressRequest; 
-use Zareismail\Cypress\Widget;   
-use Zareismail\Gutenberg\Gutenberg;
-use Zareismail\Gutenberg\HasTemplate;
+use Zareismail\Cypress\Http\Requests\CypressRequest;  
+use Zareismail\Gutenberg\Gutenberg; 
 
 class Login extends Widget
-{        
-    use HasTemplate;
-
+{      
     /**
      * Bootstrap the resource for the given request.
      * 
@@ -23,12 +16,8 @@ class Login extends Widget
      * @return void                  
      */
     public function boot(CypressRequest $request, $layout)
-    {     
-        $this->when($this->hasMeta('template'), function() use ($request, $layout) { 
-            $this->bootstrapTemplate($request, $layout);   
-        }, function() {
-            $this->renderable(false);
-        });
+    {      
+        parent::boot($request, $layout);
 
         $this->when($this->hasMeta('register_fragment'), function() {  
             $registration = Gutenberg::cachedFragments()->find($this->metaValue('register_fragment'));
@@ -38,21 +27,7 @@ class Login extends Widget
                 'registration_page' => $registration ? $registration->getUrl('/') : null,
                 'forgot_password_page' => $forgot ? $forgot->getUrl('/') : null,
             ]);
-        });
-
-        $this->withMeta([
-            'errors' => $this->validationErrors($request),
-        ]);
-    }
-
-    /**
-     * Get the template id.
-     * 
-     * @return integer
-     */
-    public function getTemplateId(): int
-    { 
-        return $this->metaValue('template');
+        }); 
     } 
 
     /**
@@ -60,7 +35,7 @@ class Login extends Widget
      * 
      * @return array
      */
-    public function serializeForTemplate(): array
+    public function serializeForDisplay(): array
     {   
         return [
             // form
@@ -95,12 +70,6 @@ class Login extends Widget
     public static function fields($request)
     {
         return [  
-            Select::make(__('Login Form Template'), 'config->template')
-                ->options(static::availableTemplates(LoginForm::class))
-                ->displayUsingLabels()
-                ->required()
-                ->rules('required'),
-
             Select::make(__('Can Login By'), 'config->credentials')
                 ->options([
                     'name' => __('Username'),
@@ -125,17 +94,13 @@ class Login extends Widget
             Select::make(__('Forgot password Page'), 'config->forgot_password_fragment')->options(function() {
                 return Gutenberg::cachedFragments()->keyBy->getKey()->map->name;
             })->displayUsingLabels(),  
-    ];
-    } 
+        ];
+    }  
 
-    protected function validationErrors(CypressRequest $request)
+    public static function relatableTemplates($request, $query)
     {
-        if (is_null($errors = $request->session()->get('errors'))) {
-            return [];
-        }
-
-        return collect($errors->messages())->map(function($errors, $field) {
-            return $errors[0] ?? null;
-        })->toArray();
+        return $query->handledBy(
+            \Armincms\Dashboard\Gutenberg\Templates\LoginForm::class
+        );
     }
 }
