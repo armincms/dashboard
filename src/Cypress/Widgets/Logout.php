@@ -45,7 +45,7 @@ class Logout extends Widget
     public static function relatableTemplates($request, $query)
     {
         return $query->handledBy(
-            \Armincms\Dashboard\Gutenberg\Templates\LoginForm::class
+            \Armincms\Dashboard\Gutenberg\Templates\LogoutForm::class
         );
     }
 }
