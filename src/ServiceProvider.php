@@ -6,6 +6,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;   
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova as LaravelNova;
 use Zareismail\Gutenberg\Gutenberg as ZareismailGutenberg;
@@ -24,6 +25,15 @@ class ServiceProvider extends RouteServiceProvider
                 ->prefix('auth')
                 ->namespace($this->namespace)
                 ->group(__DIR__.'/../routes/auth.php');
+
+            Route::middleware('web', 'auth')
+                ->prefix('_dashboard')
+                ->namespace($this->namespace)
+                ->group(__DIR__.'/../routes/web.php');
+        });
+
+        Gate::define('updateProfile', function() {
+            return false;
         });
     }
 
@@ -99,10 +109,11 @@ class ServiceProvider extends RouteServiceProvider
     protected function widgets()
     {   
         ZareismailGutenberg::widgets([ 
+            Cypress\Widgets\ForgotPassword::class, 
             Cypress\Widgets\Login::class, 
             Cypress\Widgets\Logout::class, 
+            Cypress\Widgets\Profile::class, 
             Cypress\Widgets\Register::class, 
-            Cypress\Widgets\ForgotPassword::class, 
             Cypress\Widgets\ResetPassword::class, 
             Cypress\Widgets\SendEmailVerification::class, 
         ]);
@@ -116,10 +127,11 @@ class ServiceProvider extends RouteServiceProvider
     protected function templates()
     {   
         ZareismailGutenberg::templates([  
+            Gutenberg\Templates\ForgotPasswordForm::class,
             Gutenberg\Templates\LoginForm::class,
             Gutenberg\Templates\LogoutForm::class,
+            Gutenberg\Templates\ProfileForm::class,
             Gutenberg\Templates\RegisterForm::class,
-            Gutenberg\Templates\ForgotPasswordForm::class,
             Gutenberg\Templates\ResetPasswordForm::class,
             Gutenberg\Templates\SendEmailVerificationForm::class,
         ]); 
