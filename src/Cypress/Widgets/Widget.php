@@ -52,11 +52,4 @@ class Widget extends GutenbergWidget
             return $errors[0] ?? null;
         })->toArray();
     }
-
-    protected static function availableTemplates($handler)
-    {
-        return Gutenberg::cachedTemplates()->filter(function($template) use ($handler) {
-            return $template->template === $handler;
-        });
-    }
 }

@@ -25,7 +25,8 @@ class ForgotPassword extends Widget
             // email
             'email_field' => 'email',
             'email_error' => $this->metaValue('errors.email'),
-            'email_value' => old('email'),   
+            'email_value' => old('email'), 
+            'errors' => $this->metaValue('errors'),   
         ];
     }
 

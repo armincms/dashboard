@@ -58,6 +58,7 @@ class Login extends Widget
             // remember me
             'remember_value' => 'remember_me', 
             'remember_checked' => old('remember') == 'remember_me',  
+            'errors' => $this->metaValue('errors'), 
         ];
     }
 

@@ -23,7 +23,8 @@ class SendEmailVerification extends Widget
             // email   
             'email_field' => 'email',
             'email_error' => $this->metaValue('errors.email'),  
-            'email_value' => old('email', request('email')),   
+            'email_value' => old('email', request('email')),  
+            'errors' => $this->metaValue('errors'), 
         ];
     }
 

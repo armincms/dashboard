@@ -33,6 +33,7 @@ class ResetPassword extends Widget
             'password_error' => $this->metaValue('errors.password'),    
             'password_confirmation_field' => 'password_confirmation',
             'password_confirmation_error' => $this->metaValue('errors.password_confirmation'), 
+            'errors' => $this->metaValue('errors'), 
         ];
     }
 

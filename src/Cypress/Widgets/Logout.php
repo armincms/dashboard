@@ -21,6 +21,7 @@ class Logout extends Widget
             'token_value' => csrf_token(), 
             'widget_field' => '_widget', 
             'widget_value' => $this->name,  
+            'errors' => $this->metaValue('errors'), 
         ];
     }
 
