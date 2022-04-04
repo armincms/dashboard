@@ -91,7 +91,7 @@ class ProfileUpdateRequest extends FormRequest
 
         $this->user()->save();
 
-        if (! $this->filled('hasAvatar')) {
+        if (! $this->filled('hasAvatar') || ! intval($this->input('hasAvatar'))) {
             $this->user()->clearMediaCollection('hasAvatar');
         }
 
