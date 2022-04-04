@@ -68,6 +68,8 @@ class Profile extends Widget
             'avatar_field' => 'avatar', 
             'avatar_error' => $this->metaValue('errors.avatar'),
             // password
+            'old_password_field' => 'old_password',
+            'old_password_error' => $this->metaValue('errors.old_password'),  
             'password_field' => 'password',
             'password_error' => $this->metaValue('errors.password'),    
             'password_confirmation_field' => 'password_confirmation',

@@ -60,6 +60,14 @@ class ProfileUpdateRequest extends FormRequest
             'gender' => 'required|in:male,female',
             'birthday' => 'sometimes|date', 
             'avatar' => 'nullable|image',
+            'old_password' => [ 
+                'required_with:password',
+                function($attribute, $value, $fail) {
+                    if (! Hash::check($value, $this->user()->password)) {
+                        return $fail(__('The old password is wrong.'));
+                    }
+                }
+            ],
             'password' => [
                 'nullable', 
                 'confirmed', 

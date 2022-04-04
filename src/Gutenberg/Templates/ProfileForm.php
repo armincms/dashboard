@@ -70,6 +70,8 @@ class ProfileForm extends GutenbergTemplate
             Variable::make('avatar_field', __('Name of the avatar uploader field')),  
             Variable::make('avatar_error', __('The avatar field error')),    
 
+            Variable::make('old_password_field', __('Name of the old password field')),  
+            Variable::make('old_password_error', __('The old password field error')), 
             Variable::make('password_field', __('Name of the password field')),  
             Variable::make('password_error', __('The password field error')), 
             Variable::make('password_confirmation_field', __(
