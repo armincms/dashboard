@@ -61,6 +61,7 @@ class ProfileUpdateRequest extends FormRequest
             'birthday' => 'sometimes|date', 
             'avatar' => 'nullable|image',
             'old_password' => [ 
+                'nullable',
                 'required_with:password',
                 function($attribute, $value, $fail) {
                     if (! Hash::check($value, $this->user()->password)) {
